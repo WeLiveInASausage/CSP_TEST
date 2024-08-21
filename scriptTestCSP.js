@@ -2,17 +2,28 @@ console.log('Script loaded from Github Pages');
 
 function addRandomElements() {
     const elements = [
-        '<button onclick="console.log(\'Hey\')">Click me</button>',
-        '<script>console.log(\'This is an inline script\');</script>',
-        '<button onclick="alert(\'You clicked me\')">Click me</button>',
-        '<script>console.log(\'Another inline script\');</script>',
-        '<button onclick="console.log(\'Hello\')">Click me</button>',
-        '<script>console.log(\'Yet another inline script\');</script>'
+        { type: 'button', text: 'Click me', onclick: () => console.log('Hey') },
+        { type: 'script', code: 'console.log(\'This is an inline script\');' },
+        { type: 'button', text: 'Click me', onclick: () => alert('You clicked me') },
+        { type: 'script', code: 'console.log(\'Another inline script\');' },
+        { type: 'button', text: 'Click me', onclick: () => console.log('Hello') },
+        { type: 'script', code: 'console.log(\'Yet another inline script\');' }
     ];
 
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     const div = document.createElement("div");
-    div.innerHTML = randomElement;
+
+    if (randomElement.type === 'button') {
+        const button = document.createElement("button");
+        button.textContent = randomElement.text;
+        button.addEventListener("click", randomElement.onclick);
+        div.appendChild(button);
+    } else if (randomElement.type === 'script') {
+        const script = document.createElement("script");
+        script.textContent = randomElement.code;
+        div.appendChild(script);
+    }
+
     document.body.appendChild(div);
 }
 
